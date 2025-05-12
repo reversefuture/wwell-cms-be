@@ -1,0 +1,235 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  // provider = "prisma-client-js"
+  provider = "prisma-dbml-generator"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum LanguageType {
+  en // English
+  th // Thai
+  in // Bahasa (Indonesian)
+  ms // Malay (Malaysia)
+  vi // Vietnamese
+  hi // Hindi (Indian)
+  cn // Simplified Chinese
+  zh // Traditional Chinese
+}
+
+enum Role {
+  READER
+  EDITOR
+  OWNER
+}
+
+enum ProfileType {
+  GOW
+  LBU
+  CLIENT
+}
+
+enum ContentType {
+  VIDEO
+  ARTICLE
+  EVENT
+  PARTNER
+}
+
+enum ContentStatus {
+  DRAFT
+  SUBMITTED
+  REVIEW
+  APPROVED
+  PUBLISHED
+  REJECTED
+}
+
+model Session {
+  id           String    @id @default(uuid())
+  userId       String    @unique
+  user         User      @relation(fields: [userId], references: [id])
+  expires      DateTime
+  sessionToken String    @unique
+  accessToken  String?   @unique
+  refreshToken String?   @unique
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+}
+
+model User {
+  id                String         @id @default(uuid())
+  email             String         @unique
+  mobile            String         @unique
+  username          String
+  password          String
+  imageUrl          String?
+  oktaId            String?        @unique
+  oktaProfile       OktaProfile?
+  otpCounter        String?
+  otpSecret         String?
+  session           Session?
+  isEnabled         Boolean        @default(false)
+  profiles          Profile[]
+  device            String?
+  lastLoginTime     DateTime?
+  onboardTime       DateTime?
+  country           String
+  preferredLanguage LanguageType   @default(en)
+  termsAgreed       Boolean?       @default(false)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  deletedAt         DateTime?
+  isDeleted         Boolean        @default(false)
+  Notification      Notification[]
+  articles          Article[]
+  events            Event[]
+  binahs            Binah[]
+  partners          Partner[]
+}
+
+model OktaProfile {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
+  givenName     String?
+  familyName    String?
+  nickname      String?
+  picture       String?
+  website       String?
+  gender        String?
+  locale        String?
+  phoneNumber   String?
+  phoneVerified Boolean?
+  department    String?
+  employeeId    String?
+  isDeleted     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Companies {
+  id                 String    @id @default(uuid())
+  name               String    @unique
+  localizedName      Json? // Replaced LocalizedString with Json
+  imageUrl           String?
+  profiles           Profile[]
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  isDeleted          Boolean   @default(false)
+  deletedAt          DateTime?
+  availableLanguages Json? // Replaced AvailableLanguages with Json
+  countries          String[]
+  enableBiometric    Boolean   @default(true)
+  enableChat         Boolean   @default(false)
+  enableOTP          Boolean   @default(false)
+}
+
+model Profile {
+  id        Int         @id @default(autoincrement())
+  name      String      @unique
+  market    String
+  members   User[]
+  remark    String?
+  role      Role        @default(EDITOR)
+  type      ProfileType
+  company   Companies   @relation(fields: [companyId], references: [id])
+  companyId String
+  instances Instance[]
+  isDeleted Boolean     @default(false)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model Instance {
+  id        Int       @id @default(autoincrement())
+  name      String
+  market    String
+  schema    Json
+  isEnabled Boolean   @default(false)
+  profile   Profile   @relation(fields: [profileId], references: [id])
+  profileId Int
+  articles  Article[]
+  events    Event[]
+  binahs    Binah[]
+  partners  Partner[]
+  isDeleted Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Article {
+  id         Int           @id @default(autoincrement())
+  title      String
+  body       String
+  status     ContentStatus @default(DRAFT)
+  creator    User          @relation(fields: [creatorId], references: [id])
+  creatorId  String
+  instance   Instance?     @relation(fields: [instanceId], references: [id])
+  instanceId Int?
+  isDeleted  Boolean       @default(false)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+}
+
+model Event {
+  id                 Int           @id @default(autoincrement())
+  title              String
+  body               String
+  imageUrl           String?
+  speakerName        String?
+  speakerCredential  String?
+  speakerDescription String?
+  status             ContentStatus @default(DRAFT)
+  creator            User          @relation(fields: [creatorId], references: [id])
+  creatorId          String
+  instance           Instance?     @relation(fields: [instanceId], references: [id])
+  instanceId         Int?
+  isDeleted          Boolean       @default(false)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+}
+
+model Binah {
+  id         Int           @id @default(autoincrement())
+  name       String
+  status     ContentStatus @default(DRAFT)
+  creator    User          @relation(fields: [creatorId], references: [id])
+  creatorId  String
+  instance   Instance?     @relation(fields: [instanceId], references: [id])
+  instanceId Int?
+  isDeleted  Boolean       @default(false)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+}
+
+model Partner {
+  id         Int           @id @default(autoincrement())
+  name       String
+  status     ContentStatus @default(DRAFT)
+  creator    User          @relation(fields: [creatorId], references: [id])
+  creatorId  String
+  instance   Instance?     @relation(fields: [instanceId], references: [id])
+  instanceId Int?
+  isDeleted  Boolean       @default(false)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

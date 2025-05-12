@@ -1,0 +1,45 @@
+export const apiResponseMessage = {
+  CONFLICT: 'api response conflict',
+  OUT_OF_TIME: 'Response out of time',
+  NOT_FOUND: 'Resource not found.',
+  GET_SUCCESS: 'Get request successful.',
+  GET_FAIL: 'Get request failed.',
+  POST_SUCCESS: 'Post request successful.',
+  POST_FAIL: 'Post request failed.',
+  PATCH_SUCCESS: 'Patch request successful.',
+  PATCH_FAIL: 'Patch request failed.',
+  PUT_SUCCESS: 'Put request successful.',
+  PUT_FAIL: 'Put request failed.',
+  DELETE_SUCCESS: 'Delete request successful.',
+  DELETE_FAIL: 'Delete request failed.',
+  UPLOAD_SUCCESS: 'File uploaded successfully.',
+  UPLOAD_FAILED: 'File uploaded failed.',
+  UPLOAD_MISSING: 'Upload file is missing.',
+  UPLOAD_MEDIA_UNSUPPORTED: 'File type does not match.',
+  INVALID_OBJECTID: 'Not a valid object id.',
+  MOVE_USER_TO_TOP: 'User moved to top successfully.',
+  SHOW_WAIT_USER:'Show Wait user successfully.',
+};
+
+export const authResponseMessage = {
+  NOBLE_FAIL_SEND:'Noble send failed',
+  NOBLE_SEND: 'Noble send success',
+  TYHO_SEND: 'TYHO send success',
+  UNAUTHORIZED: 'Unauthorized.',
+  AUTHENTICATION_FAILED: 'Your login ID or password was incorrect.',
+  LOGIN_SUCCESS: 'Login successfully.',
+  LOGOUT_SUCCESS: 'Logout successfully.',
+  JWT_EXPIRED: 'JWT expired. Please login again.',
+  JWT_INVALID_SIGNATURE: 'JWT invalid signature.',
+  OTP_MISSING_PARAMS: 'Please enter email or mobile to generate OTP.',
+  OTP_EXPIRED: 'OTP expired. Please generate a new one.',
+  OTP_INVALID: 'OTP invalid. Please generate a new one.',
+  OTP_VALID: 'OTP verified succussfully.',
+  GENERATE_OTP_SUCCESS:
+    'OTP has been sent to the email address associated with the registered user.',
+  PASSWORD_NOT_MATCH: 'Password does not match.',
+  REGISTER_SUCCESS:
+    'Registered successfully. Please check email for OTP verification.',
+  REGISTER_FAILED: 'We cannot proceed, please double check your entries.',
+  REGISTERD_USER: 'The email has been registered please login or try another one.'
+};

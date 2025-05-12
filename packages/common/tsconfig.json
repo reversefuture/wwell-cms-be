@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "ESNext", // Use ESNext for ES modules
+    "target": "ESNext", // Target the latest ECMAScript version
+    "moduleResolution": "node",
+    "outDir": "./dist", // Output directory for compiled files
+    "rootDir": "./src", // Source directory
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
