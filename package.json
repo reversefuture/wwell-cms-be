@@ -1,0 +1,60 @@
+{
+  "name": "cswwell",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "clean": "npx rimraf ./node_modules ./packages/**/node_modules",
+    "dev": "concurrently 'pnpm:dev:*'",
+    "dev:be": "pnpm run --dir packages/be dev",
+    "dev:cms": "pnpm run --dir packages/cms dev",
+    "build": "pnpm build:be && pnpm build:cms",
+    "build:be": "pnpm run --dir packages/be build",
+    "build:cms": "pnpm run --dir packages/cms build",
+    "start": "concurrently 'pnpm:start:*'",
+    "start:be": "pnpm run --dir packages/be start",
+    "start:cms": "pnpm run --dir packages/cms start",
+    "lint": "concurrently 'pnpm:lint:*'",
+    "lint:be": "pnpm run --dir packages/be lint",
+    "lint:cms": "pnpm run --dir packages/cms lint",
+    "format": "concurrently 'pnpm:format:*'",
+    "format:js": "prettier --write --parser typescript 'packages/**/*.{ts,tsx,js,jsx}'",
+    "prepare": "husky install",
+    "precommit": "lint-staged"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "resolutions": {
+    "semver": "^7.5.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "husky": "^8.0.1",
+    "lint-staged": "^12.4.1",
+    "prettier": "^3.5.3",
+    "tslib": "^2.8.1",
+    "typescript": "^5.8.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,.css,.scss}": "prettier --write",
+    "./packages/cms/**/*.{ts,tsx,js,jsx}": [
+      "eslint --fix"
+    ],
+    "./packages/be/**/*.{ts,js}": [
+      "eslint --fix"
+    ]
+  }
+}
