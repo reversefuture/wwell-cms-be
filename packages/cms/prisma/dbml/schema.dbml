@@ -20,7 +20,7 @@ Table User {
   email String [unique, not null]
   mobile String [unique, not null]
   username String [not null]
-  password String [not null]
+  credential String [not null]
   imageUrl String
   oktaId String [unique]
   oktaProfile OktaProfile
@@ -120,6 +120,20 @@ Table Article {
   id Int [pk, increment]
   title String [not null]
   body String [not null]
+  th_title String
+  in_title String
+  ms_title String
+  vi_title String
+  hi_title String
+  zh_title String
+  zh_HK_title String
+  th_body String
+  in_body String
+  ms_body String
+  vi_body String
+  hi_body String
+  zh_body String
+  zh_HK_body String
   status ContentStatus [not null, default: 'DRAFT']
   creator User [not null]
   creatorId String [not null]
@@ -198,8 +212,8 @@ Enum LanguageType {
   ms
   vi
   hi
-  cn
   zh
+  zh_HK
 }
 
 Enum Role {

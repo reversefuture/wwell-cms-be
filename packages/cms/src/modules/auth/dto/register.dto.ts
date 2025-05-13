@@ -14,7 +14,7 @@ export class RegisterDto {
     @Matches(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]+$/, {
         message: 'Password must be 8-16 characters, including alpha-numeric and special characters'
     })
-    password: string;
+    credential: string;
 
     @MinLength(8)
     @MaxLength(16)

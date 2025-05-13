@@ -5,7 +5,7 @@ import { PrismaService } from 'db/prisma.service';
 import { BaseService } from 'common/base/base.service';
 import { UserService } from 'modules/user/user.service';
 import { AppConfig } from 'config';
-import { User } from '../../../prisma/client';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class OTPAuthenticationService extends BaseService<User> {

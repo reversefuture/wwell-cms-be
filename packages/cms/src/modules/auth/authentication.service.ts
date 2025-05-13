@@ -18,7 +18,7 @@ import { AppConfig } from 'config';
 import { LoginDto, RegisterDto } from './dto';
 import { AuthenticatedUser } from 'types/requestTypes';
 import { EmailsService } from '../emails/emails.service';
-import { User } from '../../../prisma/client';
+import { User } from '@prisma/client';
 
 const { REGISTERD_USER } = authResponseMessage;
 
@@ -35,10 +35,10 @@ export class AuthenticationService extends BaseService<User> {
     super(prismaService.user);
   }
 
-  async getAuthenticatedUser(email: string, planTextPassword: string) {
+  async getAuthenticatedUser(email: string, planTextCredential: string) {
     try {
       const user = await this.usersService.getByEmail(email);
-      await this.verifyPassword(planTextPassword, user.password);
+      await this.verifyCredential(planTextCredential, user.credential);
       return user;
     } catch (error) {
       throw new UnauthorizedException(
@@ -47,19 +47,19 @@ export class AuthenticationService extends BaseService<User> {
     }
   }
 
-  async verifyPassword(planTextPassword: string, hashedPassword: string) {
-    const isPasswordMatching = await bcrypt.compare(
-      planTextPassword,
-      hashedPassword,
+  async verifyCredential(planTextCredential: string, hashedCredential: string) {
+    const isCredentialMatching = await bcrypt.compare(
+      planTextCredential,
+      hashedCredential,
     );
-    if (!isPasswordMatching) {
-      throw new ConflictException(authResponseMessage.PASSWORD_NOT_MATCH);
+    if (!isCredentialMatching) {
+      throw new ConflictException(authResponseMessage.CREDENTIAL_NOT_MATCH);
     }
   }
 
   async register(registerDto: RegisterDto, res: Response) {
     /*
-     Notes: In order to aviod hackers to abuse this design to compile a list of valid users through automated brute force guessing attempts. This api should return the same response whether or not the supplied username is associated with a valid account. This message must be returned to the user before any server-side password reset logic is performed to prevent users from guessing valid usernames based on the server's response time. Please refer to 3.2.2.1 in `Synopsys - AIA - AIA_Workwell_iOS_Mobile_Application_Final_Report`
+     Notes: In order to aviod hackers to abuse this design to compile a list of valid users through automated brute force guessing attempts. This api should return the same response whether or not the supplied username is associated with a valid account. This message must be returned to the user before any server-side Credential reset logic is performed to prevent users from guessing valid usernames based on the server's response time. Please refer to 3.2.2.1 in `Synopsys - AIA - AIA_Workwell_iOS_Mobile_Application_Final_Report`
     */
     let user = await this.usersService.getByEmail(registerDto.email);
     if (user) {
@@ -68,8 +68,8 @@ export class AuthenticationService extends BaseService<User> {
 
     // create user
     const salt = await bcrypt.genSalt(AppConfig.PASSWORD_SALT_ROUNDS);
-    const hashedPassword = await bcrypt.hash(registerDto.password, salt);
-    registerDto.password = hashedPassword;
+    const hashedCredential = await bcrypt.hash(registerDto.credential, salt);
+    registerDto.credential = hashedCredential;
     user = await this.usersService.createUser(registerDto);
     // if (registerDto.enableOTP) {
     //   return await this.handleRegistrationForOTPEnabled(user);

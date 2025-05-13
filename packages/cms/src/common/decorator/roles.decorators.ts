@@ -1,5 +1,5 @@
 import { applyDecorators, SetMetadata } from '@nestjs/common';
-import { Profile } from '../../../prisma/client';
+import { Profile } from '@prisma/client';
 
 export const ROLES_KEY = 'roles';
 export const ProfilesDecorator = (...roles: Profile[]) =>

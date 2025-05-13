@@ -8,7 +8,7 @@ import { IBodyFilter } from 'types/dbTypes';
 import { transformToSearchConditions } from 'utils/transformHelper';
 import { ApiPageData } from 'types/apiSpec';
 import { orderByEnum } from 'types/enums';
-import { Profile, User } from '../../../prisma/client';
+import { Profile, User } from '@prisma/client';
 
 @Injectable()
 export class UserService extends BaseService<User> {

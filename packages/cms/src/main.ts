@@ -5,9 +5,9 @@ import {
 } from '@nestjs/common';
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as cookieParser from 'cookie-parser'; // Correct import statement
+import cookieParser from 'cookie-parser'; // Correct import statement
 import 'dotenv/config';
-import * as compression from 'compression';
+import compression from 'compression';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import {

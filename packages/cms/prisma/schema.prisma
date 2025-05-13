@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  // provider = "prisma-client-js"
-  provider = "prisma-dbml-generator"
+  provider = "prisma-client-js"
+  // provider = "prisma-dbml-generator"
 }
 
 datasource db {
@@ -18,8 +18,8 @@ enum LanguageType {
   ms // Malay (Malaysia)
   vi // Vietnamese
   hi // Hindi (Indian)
-  cn // Simplified Chinese
-  zh // Traditional Chinese
+  zh // Simplified Chinese
+  zh_HK // Traditional Chinese
 }
 
 enum Role {
@@ -68,7 +68,7 @@ model User {
   email             String         @unique
   mobile            String         @unique
   username          String
-  password          String
+  credential        String
   imageUrl          String?
   oktaId            String?        @unique
   oktaProfile       OktaProfile?
@@ -165,23 +165,51 @@ model Instance {
 }
 
 model Article {
-  id         Int           @id @default(autoincrement())
-  title      String
-  body       String
-  status     ContentStatus @default(DRAFT)
-  creator    User          @relation(fields: [creatorId], references: [id])
-  creatorId  String
-  instance   Instance?     @relation(fields: [instanceId], references: [id])
-  instanceId Int?
-  isDeleted  Boolean       @default(false)
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
+  id          Int           @id @default(autoincrement())
+  title       String
+  body        String
+  th_title    String?
+  in_title    String?
+  ms_title    String?
+  vi_title    String?
+  hi_title    String?
+  zh_title    String?
+  zh_HK_title String?
+  th_body     String?
+  in_body     String?
+  ms_body     String?
+  vi_body     String?
+  hi_body     String?
+  zh_body     String?
+  zh_HK_body  String?
+  status      ContentStatus @default(DRAFT)
+  creator     User          @relation(fields: [creatorId], references: [id])
+  creatorId   String
+  instance    Instance?     @relation(fields: [instanceId], references: [id])
+  instanceId  Int?
+  isDeleted   Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 }
 
 model Event {
   id                 Int           @id @default(autoincrement())
-  title              String
-  body               String
+  title       String
+  body        String
+  th_title    String?
+  in_title    String?
+  ms_title    String?
+  vi_title    String?
+  hi_title    String?
+  zh_title    String?
+  zh_HK_title String?
+  th_body     String?
+  in_body     String?
+  ms_body     String?
+  vi_body     String?
+  hi_body     String?
+  zh_body     String?
+  zh_HK_body  String?
   imageUrl           String?
   speakerName        String?
   speakerCredential  String?

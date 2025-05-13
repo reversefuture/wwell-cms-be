@@ -37,7 +37,7 @@ export const authResponseMessage = {
   OTP_VALID: 'OTP verified succussfully.',
   GENERATE_OTP_SUCCESS:
     'OTP has been sent to the email address associated with the registered user.',
-  PASSWORD_NOT_MATCH: 'Password does not match.',
+  CREDENTIAL_NOT_MATCH: 'Password does not match.',
   REGISTER_SUCCESS:
     'Registered successfully. Please check email for OTP verification.',
   REGISTER_FAILED: 'We cannot proceed, please double check your entries.',

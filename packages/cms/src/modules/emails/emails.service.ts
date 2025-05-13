@@ -8,7 +8,7 @@ import {
   OTP_EMAIL_TEMPLATE,
 } from './constant';
 import { AppConfig } from 'config';
-import { LanguageType } from '../../../prisma/client';
+import { LanguageType } from '@prisma/client';
 
 @Injectable()
 export class EmailsService {
